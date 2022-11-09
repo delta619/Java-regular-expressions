@@ -1,0 +1,64 @@
+package linkParsing;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/*
+ In this lab, you will fill in the code in the SFAttractionsHtmlParser class, that has a method getValidLinks() that finds and returns a list of valid hyperlinks contained in a given HTML file.
+A link in an HTML document is specified in the href attribute of an anchor tag (<a> tag).
+Please refer to the comments inside the SFAttractionsHtmlParser for a detailed description of the lab.
+<a href="http://www.cs.usfca.edu/">
+
+Note that the format of the anchor tag is actually more complex than the example above shows -  the following would also be a valid a tag:
+<a name="home" target="_top" href="index.html" id="home" accesskey="A">, so you can not assume that it is <a followed by the space and the href attribute.
+Your goal is to extract only the link, you do not need to capture other attributes of the anchor tag.
+Start by looking at the touristInfo.html file in the input folder that contains several valid html links and several invalid links at the bottom of the file.
+
+You may not use any classes or packages except Pattern, Matcher, String, ArrayList, StringBuffer, BufferedReader, PrintWriter, IOException. Before using any other class, please ask the instructor.
+Requirements:
+1.	Fill in the regular expression in the string called REGEX for matching an a tag and capturing a link by using a group
+2.	Fill in the code in the getValidLinks method that takes the name of the .html file and returns an ArrayList of hyperlinks in that html. The requirements:
+•	The list should not contain "duplicates". For the purpose of this assignment, "duplicates" are the links that are the same, except for the fragment. Example: your code should consider these two links as equal: (because they are the same if you remove the fragment).
+	"java/lang/StringBuffer.html#StringBuffer" 	"java/lang/StringBuffer.html#StringBuffer-java.lang.String"
+•	Do not include links that take you to the same page (links that start with the fragment #).
+•	You are required to use a regular expression and classes Pattern and Matcher, and use at least one group in this method.
+
+3.	Fill in the code in the writeToHtmlFile method that takes a list of valid hyperlinks and writes them to the html file (so that they are clickable).
+Look at the expectedResult.html file for the expected result.
+
+You may use https://regex101.com/ website while working on your regular expression.
+Hint: you may find the following "subpattern" useful for this lab: [^>]
+
+Note: this assignment is based on and was modified from the assignment of Prof. Engle.
+ */
+public class SFAttractionsHtmlParser {
+    public static final String REGEX = ""; // regular expression for extracting the links
+
+    /** Return a list of valid html links without the fragment (that starts with #)
+     * @param filename input file
+     * @return a list of valid links represented as strings
+     */
+    public static List<String> getValidLinks(String filename) {
+        List<String> links = new ArrayList<>();
+        // FILL IN CODE:
+
+        return links;
+    }
+
+    /** Write a list of links to the html file, make each link clickable using the <a></a> tags
+     *
+     * @param links a list of valid links
+     * @param outputFilename html file
+     */
+    public static void writeToHtmlFile(List<String> links, String outputFilename) {
+        // FILL IN  CODE:
+
+    }
+
+    public static void main(String[] args) {
+        List<String> links = getValidLinks("input/touristInfo.html");
+        System.out.println(links);
+        writeToHtmlFile(links, "result.html"); // output all the valid links (without the fragment) to another html file
+        // The expected output is in expectedResult.html
+    }
+}
