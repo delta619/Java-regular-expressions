@@ -1,7 +1,15 @@
 package linkParsing;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /*
  In this lab, you will fill in the code in the SFAttractionsHtmlParser class, that has a method getValidLinks() that finds and returns a list of valid hyperlinks contained in a given HTML file.
@@ -39,11 +47,43 @@ public class SFAttractionsHtmlParser {
      * @return a list of valid links represented as strings
      */
     public static List<String> getValidLinks(String filename) {
+        String strData = readFromFile(filename);
         List<String> links = new ArrayList<>();
-        // FILL IN CODE:
 
+        String patternString1 = "<a\\s+href\\s*=\\s*\"(http[^\"]+)\"[^>]*>"; // regular expression for extracting the links
+
+        Pattern pattern = Pattern.compile(patternString1);
+        Matcher matcher = pattern.matcher(strData);
+
+
+        while(matcher.find()){
+            String link = matcher.group(1);
+            System.out.println(link);
+            links.add(link);
+        }
         return links;
+
     }
+
+    public static String readFromFile(String input) {
+        String s = "";
+        try (FileReader f = new FileReader(input)) { // using try with resources
+            // BufferedReader br = new BufferedReader(f);
+
+            // Alternatively, we could have done:
+            BufferedReader br = Files.newBufferedReader(Paths.get(input));
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                s+=line;
+            }
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+    return s;
+    }
+
+
 
     /** Write a list of links to the html file, make each link clickable using the <a></a> tags
      *
@@ -51,13 +91,25 @@ public class SFAttractionsHtmlParser {
      * @param outputFilename html file
      */
     public static void writeToHtmlFile(List<String> links, String outputFilename) {
-        // FILL IN  CODE:
+        try ( PrintWriter writer = new PrintWriter(outputFilename)) {
 
+            for(String str: links) {
+                writer.println(str.split("#")[0]);
+            }
+            writer.flush();
+        } catch (IOException e) {
+            System.out.println("IOException occured" + e);
+        }
+
+
+        // no need to close FileReader, BufferedReader or PrintWriter because
+        // we used try with resources -> they will be closed automatically.
     }
+
 
     public static void main(String[] args) {
         List<String> links = getValidLinks("input/touristInfo.html");
-        System.out.println(links);
+//        System.out.println(links);
         writeToHtmlFile(links, "result.html"); // output all the valid links (without the fragment) to another html file
         // The expected output is in expectedResult.html
     }
